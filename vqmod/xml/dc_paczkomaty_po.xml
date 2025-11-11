@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<name>DC Paczkomaty – Płatność online</name>
+	<code>dc_paczkomaty_po</code>
+	<version>1.0</version>
+	<author>Design Cart</author>
+
+	<file path="catalog/controller/common/header.php">
+		
+		<operation>
+			<search position="before"><![CDATA[
+				$data['styles'] = $this->document->getStyles();
+			]]></search>
+			<add><![CDATA[
+				$this->document->addStyle('https://geowidget.easypack24.net/css/easypack.css');
+			]]></add>
+		</operation>
+		
+		<operation>
+			<search position="before"><![CDATA[
+				$data['scripts'] = $this->document->getScripts('header');
+			]]></search>
+			<add><![CDATA[
+				$this->document->addScript('extension/dc_paczkomaty_po/catalog/view/javascript/dc_paczkomaty_po.js', 'header');
+				$this->document->addScript('https://geowidget.easypack24.net/js/sdk-for-javascript.js', 'header');
+			]]></add>
+		</operation>
+	</file>
+	
+	<file path="catalog/controller/checkout/checkout.php">
+		<operation>
+			<search><![CDATA[
+				public function index(): void {
+				]]></search>
+			<add position="before"><![CDATA[
+
+				public function saveInpostPo(): void {
+					$this->response->addHeader('Content-Type: application/json');
+
+					$code    = $this->request->post['locker_code'] ?? '';
+					$address = $this->request->post['locker_address'] ?? '';
+					$desc    = $this->request->post['locker_desc'] ?? '';
+
+					if (!$code) {
+						$this->response->setOutput(json_encode(['error' => 'Brak kodu paczkomatu.']));
+						return;
+					}
+
+					$this->session->data['inpost'] = [
+						'code'    => $code,
+						'address' => $address,
+						'desc'    => $desc
+					];
+
+					$this->response->setOutput(json_encode([
+						'success' => 'Paczkomat zapisany',
+						'locker'  => $this->session->data['inpost']
+					]));
+				}
+
+			]]></add>
+		</operation>
+	</file>
+	
+	<file path="catalog/controller/checkout/confirm.php">
+		<operation>
+			<search><![CDATA[
+				$total_data = [
+			]]></search>
+			<add position="before"><![CDATA[
+
+				// --- DC Paczkomaty: dopisanie paczkomatu do komentarza ---
+				if (!empty($this->session->data['inpost'])) {
+					$locker = $this->session->data['inpost'];
+					$locker_info = "📦 Paczkomat: " . $locker['code'] . " (" . $locker['address'] . ")";
+					if (!empty($locker['desc'])) {
+						$locker_info .= "\n" . $locker['desc'];
+					}
+
+					if (!empty($order_data['comment'])) {
+						$order_data['comment'] .= "\n\n" . $locker_info;
+					} else {
+						$order_data['comment'] = $locker_info;
+					}
+				}
+
+			]]></add>
+		</operation>
+	</file>
+
+
+	
+</modification>

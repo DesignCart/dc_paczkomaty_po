@@ -1,0 +1,81 @@
+{{ header }}
+{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid d-flex justify-content-between align-items-center">
+			<h1>{{ tx_heading_title }}</h1>
+			<div>
+				<button type="submit" form="form-dc-paczkomaty" data-bs-toggle="tooltip" title="{{ tx_button_save }}" class="btn btn-primary">
+					<i class="fa-solid fa-save"></i>
+				</button>
+				<a href="{{ cancel }}" data-bs-toggle="tooltip" title="{{ tx_button_cancel }}" class="btn btn-light">
+					<i class="fa-solid fa-reply"></i>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid">
+		<form id="form-dc-paczkomaty" action="{{ action }}" method="post">
+			<div class="card">
+				<div class="card-header"><i class="fa-solid fa-gear"></i> {{ text_edit }}</div>
+				<div class="card-body">
+
+					<div class="row mb-3">
+						<label for="input-cost" class="col-sm-2 col-form-label">{{ tx_entry_cost }}</label>
+						<div class="col-sm-10">
+							<input type="text" name="shipping_dc_paczkomaty_po_cost" value="{{ shipping_dc_paczkomaty_po_cost }}" id="input-cost" class="form-control" />
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label for="input-tax-class" class="col-sm-2 col-form-label">{{ tx_entry_tax_class }}</label>
+						<div class="col-sm-10">
+							<select name="shipping_dc_paczkomaty_po_tax_class_id" id="input-tax-class" class="form-select">
+								<option value="0"> --- None --- </option>
+								{% for tax_class in tax_classes %}
+								<option value="{{ tax_class.tax_class_id }}" {% if tax_class.tax_class_id == shipping_dc_paczkomaty_po_tax_class_id %}selected{% endif %}>
+									{{ tax_class.title }}
+								</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label for="input-geo-zone" class="col-sm-2 col-form-label">{{ tx_entry_geo_zone }}</label>
+						<div class="col-sm-10">
+							<select name="shipping_dc_paczkomaty_po_geo_zone_id" id="input-geo-zone" class="form-select">
+								<option value="0"> --- All Zones --- </option>
+								{% for geo_zone in geo_zones %}
+								<option value="{{ geo_zone.geo_zone_id }}" {% if geo_zone.geo_zone_id == shipping_dc_paczkomaty_po_geo_zone_id %}selected{% endif %}>
+									{{ geo_zone.name }}
+								</option>
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label for="input-status" class="col-sm-2 col-form-label">{{ tx_entry_status }}</label>
+						<div class="col-sm-10">
+							<select name="shipping_dc_paczkomaty_po_status" id="input-status" class="form-select">
+								<option value="1" {% if shipping_dc_paczkomaty_po_status %}selected{% endif %}>Enabled</option>
+								<option value="0" {% if not shipping_dc_paczkomaty_po_status %}selected{% endif %}>Disabled</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="row mb-3">
+						<label for="input-sort" class="col-sm-2 col-form-label">{{ tx_entry_sort }}</label>
+						<div class="col-sm-10">
+							<input type="number" name="shipping_dc_paczkomaty_po_sort_order" value="{{ shipping_dc_paczkomaty_po_sort_order }}" id="input-sort" class="form-control" />
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+{{ footer }}
