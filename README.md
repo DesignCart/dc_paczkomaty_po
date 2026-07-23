@@ -19,5 +19,7 @@ Free OpenCart 4 extension that integrates the InPost parcel locker map directly 
 • OpenCart 4.x  
 • VQMod installed  
 
-👨‍💻 Author: Design Cart  
-🌐 Website: https://www.designcart.pl
+<hr>
+<p>🔗 website: <a href="https://www.designcart.pl/">Design Cart</a>
+<p>👨‍💻 author: <a href="https://www.designcart.pl/pawel-nosko.html">Paweł Nosko</a></p>
+<p>Project page: <a href="https://www.designcart.pl/laboratorium/258-paczkomaty-inpost-dla-opencart-4-platnosc-online-i-za-pobraniem.html">Paczkomaty InPost dla OpenCart 4 </a></p>
